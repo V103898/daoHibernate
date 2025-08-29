@@ -1,51 +1,50 @@
 package ru.netology.daohibernate.repository;
-
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.netology.daohibernate.entity.Customer;
 import org.springframework.stereotype.Repository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import java.util.List;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import java.util.Optional;
 
 @Repository
-public class CustomerRepository {
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    @PersistenceContext
-    private EntityManager entityManager;
 
-    // Поскольку в таблице нет поля "city", будем искать по имени
-    public List<Customer> getCustomersByName(String name) {
-        TypedQuery<Customer> query = entityManager.createQuery(
-                "SELECT c FROM Customer c WHERE LOWER(c.name) = LOWER(:name)", Customer.class);
-        query.setParameter("name", name);
+    // Поиск по имени
+    List<Customer> findByName(String name);
 
-        return query.getResultList();
-    }
+    // Поиск по имени (без учета регистра)
+    List<Customer> findByNameIgnoreCase(String name);
 
-    // Альтернативный метод для поиска по фамилии
-    public List<Customer> getCustomersBySurname(String surname) {
-        TypedQuery<Customer> query = entityManager.createQuery(
-                "SELECT c FROM Customer c WHERE LOWER(c.surname) = LOWER(:surname)", Customer.class);
-        query.setParameter("surname", surname);
+    // Поиск по фамилии
+    List<Customer> findBySurname(String surname);
 
-        return query.getResultList();
-    }
+    // Поиск по фамилии (без учета регистра)
+    List<Customer> findBySurnameIgnoreCase(String surname);
 
-    // Метод для получения всех клиентов
-    public List<Customer> findAll() {
-        TypedQuery<Customer> query = entityManager.createQuery(
-                "SELECT c FROM Customer c", Customer.class);
-        return query.getResultList();
-    }
+    // Метод для поиска по городу (city)
+    @Query("SELECT c FROM Customer c WHERE LOWER(c.city) = LOWER(:city)")
+    List<Customer> findByCity(@Param("city") String city);
 
-    // Метод для сохранения клиента
-    public Customer save(Customer customer) {
-        entityManager.persist(customer);
-        return customer;
-    }
+    // Метод для поиска по возрасту (меньше переданного, отсортировано по возрастанию)
+    @Query("SELECT c FROM Customer c WHERE c.age < :age ORDER BY c.age ASC")
+    List<Customer> findByAgeLessThanOrderByAgeAsc(@Param("age") Integer age);
 
-    // Метод для поиска по ID
-    public Customer findById(Long id) {
-        return entityManager.find(Customer.class, id);
-    }
+    // Метод для поиска по имени и фамилии (возвращает Optional)
+    @Query("SELECT c FROM Customer c WHERE LOWER(c.name) = LOWER(:name) AND LOWER(c.surname) = LOWER(:surname)")
+    Optional<Customer> findByNameAndSurname(@Param("name") String name, @Param("surname") String surname);
+
+    // Дополнительные методы
+    List<Customer> findByAge(Integer age);
+
+    List<Customer> findByAgeGreaterThan(Integer age);
+
+    List<Customer> findByAgeBetween(Integer minAge, Integer maxAge);
+
+    List<Customer> findByPhoneNumber(String phoneNumber);
+
+    // Поиск по имени с LIKE
+    @Query("SELECT c FROM Customer c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<Customer> findByNameContaining(@Param("name") String name);
 }

@@ -24,7 +24,8 @@ public class Order {
     private Customer customer;
 
     // Конструкторы
-    public Order() {}
+    public Order() {
+    }
 
     public Order(LocalDate date, String productName, Double amount, Customer customer) {
         this.date = date;
@@ -66,7 +67,7 @@ public class Order {
         this.amount = amount;
     }
 
-    public Customer getCustomer() {
+    public  Customer getCustomer() {
         return customer;
     }
 

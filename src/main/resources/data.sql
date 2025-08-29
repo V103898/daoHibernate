@@ -3,12 +3,14 @@ DELETE FROM orders;
 DELETE FROM customers;
 
 -- Вставка тестовых данных в customers
-INSERT INTO customers (name, surname, age, phone_number) VALUES
-('Alexey', 'Ivanov', 25, '+79171234567'),
-('Roman', 'Petrov', 30, '+79199876543'),
-('Ivan', 'Sidorov', 35, '+79167778899'),
-('Anna', 'Smirnova', 28, '+79165554433'),
-('Oleg', 'Kuznetsov', 40, '+79163332211');
+INSERT INTO customers (name, surname, age, city, phone_number) VALUES
+('Alexey', 'Ivanov', 25, 'Moscow', '+79171234567'),
+('Roman', 'Petrov', 30, 'Saint Petersburg', '+79199876543'),
+('Ivan', 'Sidorov', 35, 'Moscow', '+79167778899'),
+('Anna', 'Smirnova', 28, 'Saint Petersburg', '+79165554433'),
+('Oleg', 'Kuznetsov', 40, 'Kazan', '+79163332211'),
+('Maria', 'Popova', 22, 'Moscow', '+79162223344'),
+('Dmitry', 'Volkov', 45, 'Saint Petersburg', '+79161112233');
 
 -- Вставка тестовых данных в orders
 INSERT INTO orders (date, customer_id, product_name, amount) VALUES

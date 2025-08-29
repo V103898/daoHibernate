@@ -1,5 +1,4 @@
 package ru.netology.daohibernate.entity;
-
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,9 @@ public class Customer {
     @Column(name = "age", nullable = false)
     private Integer age;
 
+    @Column(name = "city", length = 50)
+    private String city;
+
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
@@ -30,10 +32,11 @@ public class Customer {
     // Конструкторы
     public Customer() {}
 
-    public Customer(String name, String surname, Integer age, String phoneNumber) {
+    public Customer(String name, String surname, Integer age, String city, String phoneNumber) {
         this.name = name;
         this.surname = surname;
         this.age = age;
+        this.city = city;
         this.phoneNumber = phoneNumber;
     }
 
@@ -70,6 +73,14 @@ public class Customer {
         this.age = age;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -98,6 +109,7 @@ public class Customer {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", age=" + age +
+                ", city='" + city + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
